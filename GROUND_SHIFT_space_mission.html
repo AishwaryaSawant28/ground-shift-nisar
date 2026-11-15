@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GROUND SHIFT — The Sinking City Mystery</title>
+<meta name="description" content="An interactive Earth-observation investigation into Mexico City subsidence, built around NASA's published NISAR radar result.">
+<meta name="theme-color" content="#03050b">
+<link rel="stylesheet" href="groundshift.css">
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ══════════════ MAIN MENU ══════════════ -->
+<section class="screen on" id="scr-menu" aria-label="Main menu">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div>
+        <div class="brand-word">Ground Shift</div>
+        <div class="brand-sub">Earth Observation Division · Case File 001</div>
+      </div>
+    </div>
+    <div class="topmeta">
+      <button class="link" data-go="lab">Science Lab</button>
+      <button class="link" data-go="archive">Archive</button>
+      <button class="link" data-go="settings">Settings</button>
+      <span class="signal"><i></i>Downlink nominal</span>
+    </div>
+  </header>
+
+  <div class="menu-main">
+    <div class="menu-copy">
+      <div class="eyebrow">NASA Space Apps Challenge · Dancing with the SARs</div>
+      <h1 class="title"><span class="l1">Ground</span><span class="l2">Shift</span></h1>
+      <p class="tagline">The ground beneath an entire city is moving.<br><b>Can you discover why?</b></p>
+      <div class="menu-actions">
+        <button class="actionrow primary-row" id="menuStart">
+          <span class="idx">01</span>
+          <span><span class="lab">Start investigation</span><span class="sub" id="startSub">Mexico City · NASA NISAR evidence · four linked missions</span></span>
+          <span class="arw" aria-hidden="true">→</span>
+        </button>
+        <button class="actionrow" data-go="archive">
+          <span class="idx">02</span>
+          <span><span class="lab">Mission archive</span><span class="sub" id="archiveSub">Review the case record and published evidence</span></span>
+          <span class="arw" aria-hidden="true">→</span>
+        </button>
+        <button class="actionrow" data-go="lab">
+          <span class="idx">03</span>
+          <span><span class="lab">Science lab</span><span class="sub">Glossary, InSAR primer and measurement limits</span></span>
+          <span class="arw" aria-hidden="true">→</span>
+        </button>
+        <button class="actionrow" data-go="settings">
+          <span class="idx">04</span>
+          <span><span class="lab">Settings</span><span class="sub">Motion, sound, text size and case reset</span></span>
+          <span class="arw" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+    <div class="globe-wrap">
+      <canvas id="globe" aria-label="Illustration of Earth with an orbiting radar satellite and a scanning beam. Click to ping the radar."></canvas>
+      <div class="globe-meta tl">NISAR · L-BAND SAR<br><b>ORBIT PASS 1742</b></div>
+      <div class="globe-meta br">19.4326° N / 99.1332° W<br><b>MEXICO CITY</b></div>
+    </div>
+  </div>
+
+  <footer class="menu-foot">
+    <div class="telemetry">
+      <span>Station <b>MXC-01</b></span>
+      <span>Pass <b>25 OCT 2025 → 17 JAN 2026</b></span>
+      <span>Product <b>NASA NISAR deformation</b></span>
+      <span>Status <b>Evidence archived</b></span>
+    </div>
+    <div class="credit">Educational interpretation · not a live monitoring system</div>
+  </footer>
+</section>
+
+<!-- ══════════════ ARCHIVE ══════════════ -->
+<section class="screen" id="scr-archive" aria-label="Mission archive">
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Case GS-001 · Record</div>
+        <h1>Mission Archive</h1>
+        <p class="sub">Four linked investigations, one published radar result. Everything here derives from NASA's Mexico City NISAR product and introductory InSAR science.</p>
+      </div>
+      <button class="backbtn" data-go="menu">← Menu</button>
+    </div>
+    <div class="section-label"><h2>Investigation record</h2><span class="kicker" id="archProgress">0 / 4 closed</span></div>
+    <div id="archiveList"></div>
+    <div class="section-label"><h2>Primary source</h2><span class="kicker">NASA Science Photojournal</span></div>
+    <div class="source-block">
+      <b>Figure &amp; result</b>
+      <a href="https://science.nasa.gov/photojournal/us-indian-spacecraft-captures-mexico-city-subsidence/" target="_blank" rel="noopener">“US-Indian Spacecraft Captures Mexico City Subsidence”</a> — NASA Science Photojournal, PIA26709, Figure A. Observation period 25 October 2025 to 17 January 2026. The published result reports areas sinking more than 2 centimetres per month and identifies yellow and red areas as likely residual noise in this preliminary product.
+      <br><br>
+      <b>Mission context</b>
+      NISAR is the NASA–ISRO Synthetic Aperture Radar mission. The game uses the published, processed visualisation as evidence. It does not process raw NISAR data, does not present a live map and cannot determine whether any specific building is safe.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SCIENCE LAB ══════════════ -->
+<section class="screen" id="scr-lab" aria-label="Science lab">
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Reference deck · Plain language</div>
+        <h1>Science Lab</h1>
+        <p class="sub">The minimum radar science you need to read this case honestly. Definitions follow the NASA source and standard InSAR explanations.</p>
+      </div>
+      <button class="backbtn" data-go="menu">← Menu</button>
+    </div>
+    <div class="section-label"><h2>Glossary</h2><span class="kicker">8 entries</span></div>
+    <div class="glossary">
+      <details open><summary>SAR — Synthetic Aperture Radar</summary><div class="def"><span class="tag">Instrument</span><p>An imaging radar that sends its own microwave pulses and records the returning signal. Because it provides its own illumination, it can observe day or night and through cloud. A “synthetic aperture” is built by combining many pulses as the satellite moves.</p></div></details>
+      <details><summary>NISAR — NASA–ISRO SAR</summary><div class="def"><span class="tag">Mission</span><p>A joint NASA–ISRO Earth-observation radar mission. Its L-band radar (about 24 cm wavelength) is designed to measure subtle changes of the land surface, including ground deformation, over large areas. The case uses one published NISAR-derived result, not a live data feed.</p></div></details>
+      <details><summary>InSAR — Interferometric SAR</summary><div class="def"><span class="tag">Method</span><p>A technique that compares the <em>phase</em> of radar returns collected at different times from nearly the same viewing geometry. Small changes in the distance between the satellite and the ground shift the phase. Differences between acquisitions produce an interferogram, from which displacement along the radar line of sight can be estimated.</p></div></details>
+      <details><summary>Interferogram</summary><div class="def"><span class="tag">Product</span><p>The interference pattern formed by combining two radar acquisitions. Its repeating fringe pattern encodes phase differences. A full phase cycle corresponds to a change in range of half the radar wavelength — for L-band, roughly 12 cm of path difference. Turning fringes into metres requires careful processing and assumptions.</p></div></details>
+      <details><summary>Subsidence</summary><div class="def"><span class="tag">Observation</span><p>The slow downward settling of the ground surface. In this case the published map reports areas of Mexico City sinking by more than 2 centimetres per month during the observation period. Subsidence is a measurement of motion, not by itself an explanation of cause.</p></div></details>
+      <details><summary>Displacement</summary><div class="def"><span class="tag">Measurement</span><p>Change in position. Radar interferometry measures the component of that change along the satellite's line of sight — part vertical, part horizontal, depending on geometry. A single viewing geometry does not give the full three-dimensional motion.</p></div></details>
+      <details><summary>Residual noise</summary><div class="def"><span class="tag">Uncertainty</span><p>Signal artefacts left after processing that are not reliable ground-motion measurements. NASA describes yellow and red patches in this preliminary product as likely residual noise. Noise does not mean the whole map is wrong; it means those specific patches should not be over-interpreted.</p></div></details>
+      <details><summary>Groundwater extraction</summary><div class="def"><span class="tag">Cause</span><p>Pumping water from aquifers. Mexico City draws much of its water from the aquifer beneath the former lakebed. Removing water lowers pore pressure in the clay-rich sediments, allowing them to compact. This compaction is a leading explanation for the city's long-term subsidence.</p></div></details>
+    </div>
+    <div class="disclosure"><b>What this map cannot tell you.</b> A radar displacement product does not certify a building as unsafe, does not identify individual damaged structures, and does not prove a single cause. It shows surface motion over a period, with uncertainty and areas of likely noise. Scientific conclusions here combine the observed deformation with published geology and water-use context, and are labelled as inference.</div>
+  </div>
+</section>
+
+<!-- ══════════════ SETTINGS ══════════════ -->
+<section class="screen" id="scr-settings" aria-label="Settings">
+  <div class="page">
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Console configuration</div>
+        <h1>Settings</h1>
+        <p class="sub">Adjust the experience. All preferences stay on this device.</p>
+      </div>
+      <button class="backbtn" data-go="menu">← Menu</button>
+    </div>
+    <div style="margin-top:26px">
+      <div class="setrow">
+        <div><h3>Motion</h3><p>Animated starfield, orbital motion and radar sweep. Turn off for a calmer, lower-power display.</p></div>
+        <button class="switch" id="setMotion" aria-label="Motion setting"><span data-v="on" aria-pressed="true">Full</span><span data-v="off" aria-pressed="false">Reduced</span></button>
+      </div>
+      <div class="setrow">
+        <div><h3>Sound</h3><p>Subtle synthesized radar pings and interface tones. Off by default.</p></div>
+        <button class="switch" id="setSound" aria-label="Sound setting"><span data-v="on" aria-pressed="false">On</span><span data-v="off" aria-pressed="true">Off</span></button>
+      </div>
+      <div class="setrow">
+        <div><h3>Text size</h3><p>Scales the interface for comfortable reading.</p></div>
+        <button class="switch" id="setText" aria-label="Text size setting"><span data-v="sm" aria-pressed="false">Small</span><span data-v="md" aria-pressed="true">Standard</span><span data-v="lg" aria-pressed="false">Large</span></button>
+      </div>
+      <div class="setrow">
+        <div><h3>Investigation progress</h3><p>Reset XP, credibility, mission completions and NOVA's memory of this case. This cannot be undone.</p></div>
+        <button class="btn danger" id="setReset">Reset case</button>
+      </div>
+    </div>
+    <div class="disclosure">
+      <b>About NOVA.</b> NOVA is a designed science companion powered by a curated, source-grounded knowledge base written for this case. It is not a live generative AI model and does not call any external API. It cannot invent measurements, and every answer is limited to the published NASA result and general InSAR education. No account, key or network connection is required.<br><br>
+      <b>About the data.</b> The evidence image is NASA's published PIA26709 Figure A, included locally and unmodified. Educational schematics inside missions are labelled as illustrations, not NISAR processing outputs.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ INVESTIGATION ══════════════ -->
+<section class="screen" id="scr-game" aria-label="Investigation">
+  <header class="gamebar">
+    <div class="gb-brand">
+      <div class="word">GROUND <em>SHIFT</em></div>
+      <div class="case">Case GS-001 · Mexico City</div>
+    </div>
+    <nav class="gb-rail" id="gbRail" aria-label="Mission navigation"></nav>
+    <div class="gb-stats">
+      <div class="stat"><span>Science XP</span><b id="xpVal">0</b></div>
+      <div class="stat cred"><span>Credibility</span><b id="credVal">100<i>%</i></b></div>
+      <div class="stat"><span>Case</span><b id="progVal">0<i>/4</i></b></div>
+      <div class="gb-menu"><button id="toMenu" title="Return to main menu">Menu</button></div>
+    </div>
+  </header>
+  <div class="gamebody">
+    <aside class="mrail" aria-label="Investigation log">
+      <div class="k">Investigation log</div>
+      <nav id="mrailList"></nav>
+      <div class="fieldnote"><b>Case GS-001</b>Mexico City<br>25 Oct 2025 — 17 Jan 2026<br>NISAR published result</div>
+    </aside>
+    <div class="stage" id="stage" tabindex="-1"></div>
+    <aside class="nova" id="novaPanel" aria-label="NOVA science companion">
+      <div class="nova-head">
+        <div class="nova-orb" aria-hidden="true"></div>
+        <div class="nh"><h2>NOVA</h2><span>Science companion · case-linked</span></div>
+        <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <button class="nova-close" id="novaClose" aria-label="Close NOVA">×</button>
+      </div>
+      <div class="nova-log" id="novaLog" aria-live="polite"></div>
+      <div class="nova-chips" id="novaChips"></div>
+      <div class="nova-input">
+        <label class="sr" for="novaInput">Ask NOVA a question</label>
+        <input id="novaInput" maxlength="180" placeholder="Ask NOVA about the evidence…" autocomplete="off">
+        <button id="novaSend">Ask</button>
+      </div>
+      <div class="nova-disclose"><b>Curated NOVA</b> · source-grounded scripted guidance, not a live generative AI model.</div>
+    </aside>
+  </div>
+  <button class="nova-toggle" id="novaToggle" aria-controls="novaPanel" aria-expanded="false"><i></i>NOVA</button>
+</section>
+
+<!-- ══════════════ REPORT ══════════════ -->
+<section class="screen" id="scr-report" aria-label="Final investigation report">
+  <div class="report" id="reportBody"></div>
+</section>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<noscript><div style="position:fixed;inset:0;z-index:99;background:#03050b;color:#eee9dc;display:grid;place-items:center;font:15px/1.7 system-ui;padding:30px;text-align:center">GROUND SHIFT needs JavaScript enabled to run the investigation.</div></noscript>
+<script src="groundshift.js"></script>
+</body>
+</html>
