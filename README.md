@@ -121,6 +121,7 @@ Not verified: audible sound output (headless browser), real screen-reader traver
 - No frameworks, icon packs, web fonts, analytics, external APIs or paid services.
 - Development QA used Node.js scripts driving headless Chrome over the DevTools Protocol; artifacts are in `.qa/`.
 
+
 ## AI-use disclosure
 
 This project was built with substantial AI assistance (Codebuff) for code implementation, interaction design and automated QA. Scientific statements were constrained to the cited NASA product and introductory InSAR concepts; no measurements, dates or citations were invented. NOVA is explicitly a scripted, curated assistant and not a generative model. Before any public submission, a human team should review the text, verify the NASA attribution and confirm the educational claims against the primary source.
