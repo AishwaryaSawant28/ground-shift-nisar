@@ -13,8 +13,8 @@ Built for the NASA Space Apps Challenge, "Dancing with the SARs". HTML, CSS and 
    - `PIA26709_figA.png` 
 2. Open `GROUND_SHIFT_space_mission.html` in Chrome or Edge (double-click works; `file://` is supported).
 Prefer using a local server? (Optional):
-If you want to run it through localhost, open your terminal in the project folder and start a simple Python server:
 
+If you want to run it through localhost, open your terminal in the project folder and start a simple Python server:
 ```bash
 cd path/to/folder
 python -m http.server 8000
